@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/ferza17/grpc-course/calculator/calculatorpb"
 	"google.golang.org/grpc"
+	"io"
 	"log"
 	"net"
 	"time"
@@ -41,6 +42,36 @@ func (*server) SumManyTimes(req *calculatorpb.SumManyTimesRequest, stream calcul
 		time.Sleep(time.Second * 1)
 	}
 	return nil
+}
+
+func (*server) AvgLongTimes(stream calculatorpb.SumService_AvgLongTimesServer) error {
+	var total int32
+	var divider int
+
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			// End Of File
+
+			// Business Logic
+			var result float64
+			result = float64(total) / float64(divider)
+			// End
+
+			return stream.SendAndClose(&calculatorpb.AvgLongResponse{
+				Result: result,
+			})
+		}
+
+		if err != nil {
+			log.Fatalf("Unable to read client stream: %v", err)
+			return err
+		}
+
+		// divider +1 if not in end of file
+		total += req.GetNum()
+		divider += 1
+	}
 }
 
 func main() {

@@ -267,6 +267,100 @@ func (x *SumManyTimesResponse) GetResult() int32 {
 	return 0
 }
 
+type AvgLongRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Num int32 `protobuf:"varint,1,opt,name=num,proto3" json:"num,omitempty"`
+}
+
+func (x *AvgLongRequest) Reset() {
+	*x = AvgLongRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_calculator_calculatorpb_calculator_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AvgLongRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AvgLongRequest) ProtoMessage() {}
+
+func (x *AvgLongRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_calculator_calculatorpb_calculator_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AvgLongRequest.ProtoReflect.Descriptor instead.
+func (*AvgLongRequest) Descriptor() ([]byte, []int) {
+	return file_calculator_calculatorpb_calculator_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *AvgLongRequest) GetNum() int32 {
+	if x != nil {
+		return x.Num
+	}
+	return 0
+}
+
+type AvgLongResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Result float64 `protobuf:"fixed64,1,opt,name=result,proto3" json:"result,omitempty"`
+}
+
+func (x *AvgLongResponse) Reset() {
+	*x = AvgLongResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_calculator_calculatorpb_calculator_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AvgLongResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AvgLongResponse) ProtoMessage() {}
+
+func (x *AvgLongResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_calculator_calculatorpb_calculator_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AvgLongResponse.ProtoReflect.Descriptor instead.
+func (*AvgLongResponse) Descriptor() ([]byte, []int) {
+	return file_calculator_calculatorpb_calculator_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *AvgLongResponse) GetResult() float64 {
+	if x != nil {
+		return x.Result
+	}
+	return 0
+}
+
 var File_calculator_calculatorpb_calculator_proto protoreflect.FileDescriptor
 
 var file_calculator_calculatorpb_calculator_proto_rawDesc = []byte{
@@ -287,20 +381,29 @@ var file_calculator_calculatorpb_calculator_proto_rawDesc = []byte{
 	0x01, 0x28, 0x05, 0x52, 0x05, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x22, 0x2e, 0x0a, 0x14, 0x53, 0x75,
 	0x6d, 0x4d, 0x61, 0x6e, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
 	0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x05, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x32, 0xa1, 0x01, 0x0a, 0x0a, 0x53,
-	0x75, 0x6d, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3c, 0x0a, 0x07, 0x53, 0x75, 0x6d,
-	0x44, 0x61, 0x74, 0x61, 0x12, 0x16, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f,
-	0x72, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x63,
-	0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0c, 0x53, 0x75, 0x6d, 0x4d, 0x61,
-	0x6e, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x12, 0x1f, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c,
+	0x28, 0x05, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x22, 0x0a, 0x0e, 0x41, 0x76,
+	0x67, 0x4c, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x10, 0x0a, 0x03,
+	0x6e, 0x75, 0x6d, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x6e, 0x75, 0x6d, 0x22, 0x29,
+	0x0a, 0x0f, 0x41, 0x76, 0x67, 0x4c, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x01, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x32, 0xee, 0x01, 0x0a, 0x0a, 0x53, 0x75,
+	0x6d, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3c, 0x0a, 0x07, 0x53, 0x75, 0x6d, 0x44,
+	0x61, 0x74, 0x61, 0x12, 0x16, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72,
+	0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x63, 0x61,
+	0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0c, 0x53, 0x75, 0x6d, 0x4d, 0x61, 0x6e,
+	0x79, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x12, 0x1f, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61,
+	0x74, 0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x4d, 0x61, 0x6e, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x73,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c,
 	0x61, 0x74, 0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x4d, 0x61, 0x6e, 0x79, 0x54, 0x69, 0x6d, 0x65,
-	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x63, 0x61, 0x6c, 0x63, 0x75,
-	0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x53, 0x75, 0x6d, 0x4d, 0x61, 0x6e, 0x79, 0x54, 0x69, 0x6d,
-	0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x42, 0x19,
-	0x5a, 0x17, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x63, 0x61, 0x6c,
-	0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x12, 0x4b, 0x0a,
+	0x0c, 0x41, 0x76, 0x67, 0x4c, 0x6f, 0x6e, 0x67, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x12, 0x1a, 0x2e,
+	0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x41, 0x76, 0x67, 0x4c, 0x6f,
+	0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x63, 0x61, 0x6c, 0x63,
+	0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x41, 0x76, 0x67, 0x4c, 0x6f, 0x6e, 0x67, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x28, 0x01, 0x42, 0x19, 0x5a, 0x17, 0x63, 0x61,
+	0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61,
+	0x74, 0x6f, 0x72, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -315,22 +418,26 @@ func file_calculator_calculatorpb_calculator_proto_rawDescGZIP() []byte {
 	return file_calculator_calculatorpb_calculator_proto_rawDescData
 }
 
-var file_calculator_calculatorpb_calculator_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_calculator_calculatorpb_calculator_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_calculator_calculatorpb_calculator_proto_goTypes = []interface{}{
 	(*Sum)(nil),                  // 0: calculator.Sum
 	(*SumRequest)(nil),           // 1: calculator.SumRequest
 	(*SumResponse)(nil),          // 2: calculator.SumResponse
 	(*SumManyTimesRequest)(nil),  // 3: calculator.SumManyTimesRequest
 	(*SumManyTimesResponse)(nil), // 4: calculator.SumManyTimesResponse
+	(*AvgLongRequest)(nil),       // 5: calculator.AvgLongRequest
+	(*AvgLongResponse)(nil),      // 6: calculator.AvgLongResponse
 }
 var file_calculator_calculatorpb_calculator_proto_depIdxs = []int32{
 	0, // 0: calculator.SumRequest.sum:type_name -> calculator.Sum
 	1, // 1: calculator.SumService.SumData:input_type -> calculator.SumRequest
 	3, // 2: calculator.SumService.SumManyTimes:input_type -> calculator.SumManyTimesRequest
-	2, // 3: calculator.SumService.SumData:output_type -> calculator.SumResponse
-	4, // 4: calculator.SumService.SumManyTimes:output_type -> calculator.SumManyTimesResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
+	5, // 3: calculator.SumService.AvgLongTimes:input_type -> calculator.AvgLongRequest
+	2, // 4: calculator.SumService.SumData:output_type -> calculator.SumResponse
+	4, // 5: calculator.SumService.SumManyTimes:output_type -> calculator.SumManyTimesResponse
+	6, // 6: calculator.SumService.AvgLongTimes:output_type -> calculator.AvgLongResponse
+	4, // [4:7] is the sub-list for method output_type
+	1, // [1:4] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -402,6 +509,30 @@ func file_calculator_calculatorpb_calculator_proto_init() {
 				return nil
 			}
 		}
+		file_calculator_calculatorpb_calculator_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AvgLongRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_calculator_calculatorpb_calculator_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AvgLongResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -409,7 +540,7 @@ func file_calculator_calculatorpb_calculator_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_calculator_calculatorpb_calculator_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -439,6 +570,8 @@ type SumServiceClient interface {
 	SumData(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error)
 	//Server Streaming API
 	SumManyTimes(ctx context.Context, in *SumManyTimesRequest, opts ...grpc.CallOption) (SumService_SumManyTimesClient, error)
+	//Client Streaming API
+	AvgLongTimes(ctx context.Context, opts ...grpc.CallOption) (SumService_AvgLongTimesClient, error)
 }
 
 type sumServiceClient struct {
@@ -490,12 +623,48 @@ func (x *sumServiceSumManyTimesClient) Recv() (*SumManyTimesResponse, error) {
 	return m, nil
 }
 
+func (c *sumServiceClient) AvgLongTimes(ctx context.Context, opts ...grpc.CallOption) (SumService_AvgLongTimesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_SumService_serviceDesc.Streams[1], "/calculator.SumService/AvgLongTimes", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &sumServiceAvgLongTimesClient{stream}
+	return x, nil
+}
+
+type SumService_AvgLongTimesClient interface {
+	Send(*AvgLongRequest) error
+	CloseAndRecv() (*AvgLongResponse, error)
+	grpc.ClientStream
+}
+
+type sumServiceAvgLongTimesClient struct {
+	grpc.ClientStream
+}
+
+func (x *sumServiceAvgLongTimesClient) Send(m *AvgLongRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *sumServiceAvgLongTimesClient) CloseAndRecv() (*AvgLongResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(AvgLongResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // SumServiceServer is the server API for SumService service.
 type SumServiceServer interface {
 	// UNARY API
 	SumData(context.Context, *SumRequest) (*SumResponse, error)
 	//Server Streaming API
 	SumManyTimes(*SumManyTimesRequest, SumService_SumManyTimesServer) error
+	//Client Streaming API
+	AvgLongTimes(SumService_AvgLongTimesServer) error
 }
 
 // UnimplementedSumServiceServer can be embedded to have forward compatible implementations.
@@ -507,6 +676,9 @@ func (*UnimplementedSumServiceServer) SumData(context.Context, *SumRequest) (*Su
 }
 func (*UnimplementedSumServiceServer) SumManyTimes(*SumManyTimesRequest, SumService_SumManyTimesServer) error {
 	return status.Errorf(codes.Unimplemented, "method SumManyTimes not implemented")
+}
+func (*UnimplementedSumServiceServer) AvgLongTimes(SumService_AvgLongTimesServer) error {
+	return status.Errorf(codes.Unimplemented, "method AvgLongTimes not implemented")
 }
 
 func RegisterSumServiceServer(s *grpc.Server, srv SumServiceServer) {
@@ -552,6 +724,32 @@ func (x *sumServiceSumManyTimesServer) Send(m *SumManyTimesResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _SumService_AvgLongTimes_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(SumServiceServer).AvgLongTimes(&sumServiceAvgLongTimesServer{stream})
+}
+
+type SumService_AvgLongTimesServer interface {
+	SendAndClose(*AvgLongResponse) error
+	Recv() (*AvgLongRequest, error)
+	grpc.ServerStream
+}
+
+type sumServiceAvgLongTimesServer struct {
+	grpc.ServerStream
+}
+
+func (x *sumServiceAvgLongTimesServer) SendAndClose(m *AvgLongResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *sumServiceAvgLongTimesServer) Recv() (*AvgLongRequest, error) {
+	m := new(AvgLongRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _SumService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "calculator.SumService",
 	HandlerType: (*SumServiceServer)(nil),
@@ -566,6 +764,11 @@ var _SumService_serviceDesc = grpc.ServiceDesc{
 			StreamName:    "SumManyTimes",
 			Handler:       _SumService_SumManyTimes_Handler,
 			ServerStreams: true,
+		},
+		{
+			StreamName:    "AvgLongTimes",
+			Handler:       _SumService_AvgLongTimes_Handler,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "calculator/calculatorpb/calculator.proto",
