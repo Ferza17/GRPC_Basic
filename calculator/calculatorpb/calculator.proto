@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package calculator;
+
+
+option go_package = "calculator/calculatorpb";
+
+message Sum {
+  int32 sum1 = 1;
+  int32 sum2 = 2;
+}
+
+message SumRequest{
+  Sum sum = 1;
+}
+
+message SumResponse{
+  int32 result=1;
+}
+
+message SumManyTimesRequest{
+  int32 total= 1;
+}
+
+message SumManyTimesResponse{
+  int32 result = 1;
+}
+
+service SumService{
+  // UNARY API
+  rpc SumData(SumRequest) returns (SumResponse) {};
+
+  //Server Streaming API
+  rpc SumManyTimes(SumManyTimesRequest) returns (stream SumManyTimesResponse) {};
+}
