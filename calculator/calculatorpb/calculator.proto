@@ -26,10 +26,21 @@ message SumManyTimesResponse{
   int32 result = 1;
 }
 
+message AvgLongRequest{
+  int32 num = 1;
+}
+
+message AvgLongResponse{
+  double result = 1;
+}
+
 service SumService{
   // UNARY API
   rpc SumData(SumRequest) returns (SumResponse) {};
 
   //Server Streaming API
   rpc SumManyTimes(SumManyTimesRequest) returns (stream SumManyTimesResponse) {};
+
+  //Client Streaming API
+  rpc AvgLongTimes(stream AvgLongRequest) returns (AvgLongResponse){};
 }
