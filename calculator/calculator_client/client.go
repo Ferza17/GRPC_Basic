@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func main()  {
+func main() {
 	fmt.Println("About to start client...")
 	cc, err := grpc.Dial("localhost:50052", grpc.WithInsecure())
 	if err != nil {
@@ -20,11 +20,12 @@ func main()  {
 	c := calculatorpb.NewSumServiceClient(cc)
 	//doSum(c)
 	//doServerStreaming(c)
-	doClientStreaming(c)
+	//doClientStreaming(c)
+	doBiDiStreaming(c)
 
 }
 
-func doSum(c calculatorpb.SumServiceClient)  {
+func doSum(c calculatorpb.SumServiceClient) {
 	fmt.Println("About to doSum...")
 	req := &calculatorpb.SumRequest{
 		Sum: &calculatorpb.Sum{
@@ -40,7 +41,7 @@ func doSum(c calculatorpb.SumServiceClient)  {
 	log.Printf("Result Data -> %v	", res)
 }
 
-func doServerStreaming(c calculatorpb.SumServiceClient)  {
+func doServerStreaming(c calculatorpb.SumServiceClient) {
 	fmt.Println("About to Streaming...")
 	req := &calculatorpb.SumManyTimesRequest{Total: 120}
 
@@ -48,7 +49,7 @@ func doServerStreaming(c calculatorpb.SumServiceClient)  {
 	if err != nil {
 		log.Fatalf("Error when calling SumManyTimes RPC: %v", err)
 	}
-	for  {
+	for {
 		msg, err := resStream.Recv()
 		if err == io.EOF {
 			// Reached the end of stream
@@ -63,7 +64,7 @@ func doServerStreaming(c calculatorpb.SumServiceClient)  {
 	}
 }
 
-func doClientStreaming(c calculatorpb.SumServiceClient)  {
+func doClientStreaming(c calculatorpb.SumServiceClient) {
 	fmt.Println("about to start Client Streaming RPC...")
 
 	request := []*calculatorpb.AvgLongRequest{
@@ -78,7 +79,7 @@ func doClientStreaming(c calculatorpb.SumServiceClient)  {
 		log.Fatalf("Unable to call AvgLongTimes")
 	}
 
-	for _, req := range request{
+	for _, req := range request {
 		fmt.Println("Sending Request : ", req)
 
 		if err := stream.Send(req); err != nil {
@@ -94,5 +95,55 @@ func doClientStreaming(c calculatorpb.SumServiceClient)  {
 		log.Fatalln("Unable to Close and Receive response : ", err)
 	}
 	fmt.Println("AvgLongTimes Response : ", response)
+
+}
+
+func doBiDiStreaming(c calculatorpb.SumServiceClient) {
+	fmt.Println("about to start BiDi Streaming RPC...")
+
+	stream, err := c.FindMaximum(context.Background())
+	if err != nil {
+		log.Fatalf("Error while FindMaximum: %v", err)
+	}
+
+	waitc := make(chan struct{})
+
+	// send go routine
+	go func() {
+		numbers := []int32{4, 7, 2, 19, 4, 6, 32}
+		for _, num := range numbers {
+			fmt.Println("Sending number: ", num)
+			if err := stream.Send(&calculatorpb.FindMaximumRequest{Number: num}); err != nil {
+				break
+			}
+			// dont do this in production; just to make sure its work
+			time.Sleep(1 * time.Second)
+		}
+
+		if err := stream.CloseSend(); err != nil {
+			log.Fatalf("Error while close and send request: %v", err)
+			return
+		}
+	}()
+
+	// receive go routine
+	go func() {
+		for {
+			res, err := stream.Recv()
+			if err == io.EOF {
+				break
+			}
+
+			if err != nil {
+				log.Fatalf("Error while receive stream: %v", err)
+			}
+
+			maximum := res.GetMaximum()
+			fmt.Printf("Receive a new Maximum of...: %v\n", maximum)
+		}
+		close(waitc)
+	}()
+
+	<-waitc
 
 }

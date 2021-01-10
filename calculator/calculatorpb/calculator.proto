@@ -15,11 +15,11 @@ message SumRequest{
 }
 
 message SumResponse{
-  int32 result=1;
+  int32 result = 1;
 }
 
 message SumManyTimesRequest{
-  int32 total= 1;
+  int32 total = 1;
 }
 
 message SumManyTimesResponse{
@@ -34,6 +34,14 @@ message AvgLongResponse{
   double result = 1;
 }
 
+message FindMaximumRequest{
+  int32 number = 1;
+}
+
+message FindMaximumResponse{
+  int32 maximum = 1;
+}
+
 service SumService{
   // UNARY API
   rpc SumData(SumRequest) returns (SumResponse) {};
@@ -43,4 +51,7 @@ service SumService{
 
   //Client Streaming API
   rpc AvgLongTimes(stream AvgLongRequest) returns (AvgLongResponse){};
+
+  // Bi Directional Streaming API
+  rpc FindMaximum(stream FindMaximumRequest) returns (stream FindMaximumResponse){};
 }

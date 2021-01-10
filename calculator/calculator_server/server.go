@@ -74,6 +74,32 @@ func (*server) AvgLongTimes(stream calculatorpb.SumService_AvgLongTimesServer) e
 	}
 }
 
+func (*server) FindMaximum(stream calculatorpb.SumService_FindMaximumServer) error {
+	maximum := int32(0)
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			log.Fatalf("Error While Reading stream: %v", err)
+			return err
+		}
+
+		// Business Logic
+		number := req.GetNumber()
+		if number > maximum {
+			maximum = number
+			if err := stream.Send(&calculatorpb.FindMaximumResponse{Maximum: maximum}); err != nil {
+				log.Fatalf("Error while sending stream: %v", err)
+				return err
+			}
+		}
+
+	}
+
+}
+
 func main() {
 	fmt.Println("About to start Server...")
 	lis, err := net.Listen("tcp", "0.0.0.0:50052")
