@@ -14,6 +14,7 @@ import (
 
 type server struct{}
 
+// Unary API
 func (*server) Greet(ctx context.Context, req *greetpb.GreatRequest) (*greetpb.GreetResponse, error) {
 	fmt.Printf("Greet Function was invoked with: %v", req)
 	firstName := req.GetGreeting().GetFirstName()
@@ -25,7 +26,7 @@ func (*server) Greet(ctx context.Context, req *greetpb.GreatRequest) (*greetpb.G
 
 	return res, nil
 }
-
+// Server Streaming API
 func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb.GreatService_GreetManyTimesServer) error {
 	fmt.Printf("GreetManyTimes was invoked with %v\n", req)
 	firstName := req.GetGreeting().GetFirstName()
@@ -42,7 +43,7 @@ func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb
 	}
 	return nil
 }
-
+// Client Streaming API
 func (*server) LongGreet(stream greetpb.GreatService_LongGreetServer) error {
 	fmt.Printf("LongGreet was invoked with a streaming request %v\n", stream)
 	var result string
@@ -65,9 +66,32 @@ func (*server) LongGreet(stream greetpb.GreatService_LongGreetServer) error {
 	}
 	return nil
 }
+// Bi Directional Streaming API
+func (*server) GreetEveryone(stream greetpb.GreatService_GreetEveryoneServer) error  {
+	fmt.Printf("GreetEveryone was invoked with a streaming request %v\n", stream)
+
+	for  {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+
+		if err != nil {
+			log.Fatalf("Error while reading client stream: %v", err)
+			return err
+		}
+
+		firstName := req.GetGreeting().GetFirstName()
+		result := "Hello " + firstName + " !"
+		if err := stream.Send(&greetpb.GreetEveryoneResponse{Result: result}); err != nil {
+			log.Fatalf("Error while sending stream.send: %v", err)
+			return err
+		}
+	}
+}
 
 func main() {
-	fmt.Println("Hello World")
+	fmt.Println("Server about to running...")
 	lis, err := net.Listen("tcp", "0.0.0.0:50051")
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
