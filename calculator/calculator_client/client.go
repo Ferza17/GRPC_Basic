@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/ferza17/grpc-course/calculator/calculatorpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"time"
@@ -21,7 +23,8 @@ func main() {
 	//doSum(c)
 	//doServerStreaming(c)
 	//doClientStreaming(c)
-	doBiDiStreaming(c)
+	//doBiDiStreaming(c)
+	doErrorUnary(c)
 
 }
 
@@ -106,7 +109,7 @@ func doBiDiStreaming(c calculatorpb.SumServiceClient) {
 		log.Fatalf("Error while FindMaximum: %v", err)
 	}
 
-	waitc := make(chan struct{})
+	wait := make(chan struct{})
 
 	// send go routine
 	go func() {
@@ -141,9 +144,36 @@ func doBiDiStreaming(c calculatorpb.SumServiceClient) {
 			maximum := res.GetMaximum()
 			fmt.Printf("Receive a new Maximum of...: %v\n", maximum)
 		}
-		close(waitc)
+		close(wait)
 	}()
 
-	<-waitc
+	<-wait
 
+}
+
+func doErrorUnary(c calculatorpb.SumServiceClient) {
+	fmt.Println("About to start doErrorUnary...")
+	// Correct call
+	doErrorCall(c, 10)
+	// Error call
+	doErrorCall(c, -2)
+
+}
+
+func doErrorCall(c calculatorpb.SumServiceClient, n int32) {
+	res, err := c.SquareRoot(context.Background(), &calculatorpb.SquareRootRequest{Number: n})
+	if err != nil {
+		respErr, ok := status.FromError(err)
+		if ok {
+			// actual error from gRPC ( user error )
+			fmt.Println("Error Code from serve : ", respErr.Code())
+			fmt.Println("Error Message from server :  ", respErr.Message())
+			if respErr.Code() == codes.InvalidArgument {
+				fmt.Println("Probably sent a negative argument!")
+			}
+		} else {
+			log.Fatalf("Big Error Calling SquareRoot: %v\n", err)
+		}
+	}
+	fmt.Printf("Result of square root of %v: %v\n", n, res.GetNumber())
 }

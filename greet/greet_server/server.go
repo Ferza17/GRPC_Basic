@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"github.com/ferza17/grpc-course/greet/greetpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"net"
@@ -26,6 +29,7 @@ func (*server) Greet(ctx context.Context, req *greetpb.GreatRequest) (*greetpb.G
 
 	return res, nil
 }
+
 // Server Streaming API
 func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb.GreatService_GreetManyTimesServer) error {
 	fmt.Printf("GreetManyTimes was invoked with %v\n", req)
@@ -43,6 +47,7 @@ func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb
 	}
 	return nil
 }
+
 // Client Streaming API
 func (*server) LongGreet(stream greetpb.GreatService_LongGreetServer) error {
 	fmt.Printf("LongGreet was invoked with a streaming request %v\n", stream)
@@ -66,11 +71,12 @@ func (*server) LongGreet(stream greetpb.GreatService_LongGreetServer) error {
 	}
 	return nil
 }
+
 // Bi Directional Streaming API
-func (*server) GreetEveryone(stream greetpb.GreatService_GreetEveryoneServer) error  {
+func (*server) GreetEveryone(stream greetpb.GreatService_GreetEveryoneServer) error {
 	fmt.Printf("GreetEveryone was invoked with a streaming request %v\n", stream)
 
-	for  {
+	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
 			return nil
@@ -90,6 +96,28 @@ func (*server) GreetEveryone(stream greetpb.GreatService_GreetEveryoneServer) er
 	}
 }
 
+func (*server) GreetWithDeadline(ctx context.Context, req *greetpb.GreetWithDeadlineRequest) (*greetpb.GreetWithDeadlineResponse, error) {
+	fmt.Printf("GreetWithDeadline was invoked with a streaming request %v\n", req)
+	for i := 0; i < 3; i++ {
+		if ctx.Err() == context.Canceled {
+			// The client cancelled the request
+			fmt.Println("The Client cancelled the request!")
+			return nil, status.Error(codes.Canceled, "The client cancelled the request!")
+		}
+		time.Sleep(1 * time.Second)
+	}
+
+	firstName := req.GetGreeting().GetFirstName()
+	result := "Hello " + firstName
+
+	res := &greetpb.GreetWithDeadlineResponse{
+		Result: result,
+	}
+
+	return res, nil
+
+}
+
 func main() {
 	fmt.Println("Server about to running...")
 	lis, err := net.Listen("tcp", "0.0.0.0:50051")
@@ -97,7 +125,21 @@ func main() {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
-	s := grpc.NewServer()
+	tls := false
+	opts := []grpc.ServerOption{}
+
+	if tls {
+		certFile := "ssl/server.crt"
+		keyFile := "ssl/server.pem"
+		credential, sslErr := credentials.NewServerTLSFromFile(certFile, keyFile)
+		if sslErr != nil {
+			log.Fatalf("Failed loading certificate: %v", sslErr)
+			return
+		}
+		opts = append(opts, grpc.Creds(credential))
+	}
+
+	s := grpc.NewServer(opts...)
 	greetpb.RegisterGreatServiceServer(s, &server{})
 
 	if err := s.Serve(lis); err != nil {
